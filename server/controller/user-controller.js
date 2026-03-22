@@ -1,6 +1,11 @@
 import User from '../model/user.js';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 import bcrypt from 'bcryptjs';
+import token from '../model/token.js';
+
+dotenv.config();
 
 export const signupUser = async (request, response) => {
   try {
@@ -22,9 +27,29 @@ export const signupUser = async (request, response) => {
   }
 };
 
-export const loginUser = async (request,response) => {
-  let user= await user.findone({username: request.body.username});
-  if(!user){
-    return response.status(400).json({message:'user not found'});
+
+export const loginUser = async (request, response) => {
+  try {
+    const user = await User.findOne({ username: request.body.username });
+
+    if (!user) {
+      return response.status(401).json('Invalid Username');
+    }
+
+    const match = await bcrypt.compare(request.body.password, user.password);
+
+    if (!match) {
+      return response.status(401).json('Invalid Password');
+    }
+
+    return response.status(200).json({
+      accessToken: "dummy",
+      refreshToken: "dummy",
+      username: user.username,
+      name: user.name
+    });
+
+  } catch (error) {
+    return response.status(500).json(error.message);
   }
-}
+};

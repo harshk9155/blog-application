@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
     baseURL : API_URL,
     timeout:1000,
     headers: {
-        'content-Type' : 'application/json'    }
+        'Content-Type' : 'application/json'    }
 })
 
 axiosInstance.interceptors.request.use(
@@ -31,9 +31,8 @@ axiosInstance.interceptors.response.use(
     },
 
     function(error){
-        // stop global leader here
-        return Promise.reject(processError(error));
-    }
+    return Promise.reject(processError(error));
+}
 )
     
 //////////////////////////
@@ -94,7 +93,7 @@ for(const[key, value] of Object.entries(SERVICE_URLS)){
     API[key] = (body, showUploadProgress, showDownloadProgress) => 
         axiosInstance({
             method: value.method,
-            url: value.URL,
+            url: value.url,
             data: body,
             responseType: value.responseType,
             onUploadProgress: function(progressEvent){
