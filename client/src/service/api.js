@@ -9,7 +9,7 @@ const API_URL = 'http://localhost:8000';
 
 const axiosInstance = axios.create({
     baseURL : API_URL,
-    timeout:1000,
+    timeout:10000,
     headers: {
         'Content-Type' : 'application/json'    }
 })
@@ -24,15 +24,15 @@ axiosInstance.interceptors.request.use(
     }
 )
 
+
 axiosInstance.interceptors.response.use(
     function(response){
-        // stop global loader here
         return processresponse(response);
     },
 
     function(error){
-    return Promise.reject(processError(error));
-}
+        return Promise.resolve(processError(error)); // changed reject → resolve
+    }
 )
     
 //////////////////////////

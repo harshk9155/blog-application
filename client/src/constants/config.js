@@ -36,5 +36,10 @@ export const API_NOTIFICATION_MESSAGES = {
         userLogin: {
              url: '/api/login',
             method: 'POST'
+        },
+
+        uploadFile: {
+            url: '/api/uploadFile',
+            method: 'POST'
         }
     }

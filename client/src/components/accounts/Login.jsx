@@ -112,33 +112,32 @@ const Login = ({isUserAuthenticated}) => {
 
    const loginUser = async () => {
   console.log("Login clicked");
-
   try {
     let response = await API.userLogin(login);
+    console.log("Full response:", response); // keep this for now
 
-    console.log("Response:", response);   
+    if (response?.isError) {
+      seterror(response.msg || 'Server error');
+      return;
+    }
 
-    if (response && response.issuccess) {
+    if (response?.issuccess) {
       seterror('');
-
       sessionStorage.setItem('accessToken', response.data.accessToken);
       sessionStorage.setItem('refreshToken', response.data.refreshToken);
-
       setAccount({
         username: response.data.username,
         name: response.data.name
       });
       isUserAuthenticated(true);
-
       navigate('/home');
-
     } else {
       seterror('Invalid credentials');
     }
 
   } catch (error) {
     console.log(error);
-    seterror('Server error while login');
+    seterror('Something went wrong');
   }
 };
     
