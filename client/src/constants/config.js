@@ -39,7 +39,52 @@ export const API_NOTIFICATION_MESSAGES = {
         },
 
         uploadFile: {
-            url: '/api/uploadFile',
+            url: '/api/file/upload',
             method: 'POST'
+        },
+
+        createPost: {
+            url: '/api/posts/create',
+            method: 'POST'
+        },
+        getAllpost: {
+            url:'/api/posts',
+            method: 'GET',
+            params: true
+        },
+
+        getPostById: {
+            url: '/api/posts/',
+            method: 'GET',
+            query: true
+        },
+        updatePost: {
+            url: '/api/posts/',
+            method: 'PUT',
+            query: true
+        },
+
+        deletePost: {
+            url: '/api/posts/',
+            method: 'DELETE',
+            query: true
+        },
+        newComment: {
+            url: '/api/comments/new',
+            method: 'POST',
+            
+        
+        },
+        getAllComments: {
+            url: '/api/comments',
+            method: 'GET',
+            params: true
+
+        },
+        deleteComment: {
+        url: '/api/comments/',
+        method: 'DELETE',
+        query: true
         }
+
     }

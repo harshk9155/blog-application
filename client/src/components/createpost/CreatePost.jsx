@@ -1,16 +1,13 @@
-import {Box, FormControl, styled, InputBase,Button, TextareaAutosize} from '@mui/material';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { useContext } from 'react';
+import { Box, FormControl, styled, InputBase, Button, TextareaAutosize } from '@mui/material';
+import { useState, useEffect, useContext } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { useLocation } from 'react-router-dom';
-import { DataContext} from '../../context/DataProvider';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { DataContext } from '../../context/DataProvider';
 import { API } from '../../service/api';
 
-const Container = styled(Box) ({
+const Container = styled(Box)({
     margin: '50px 100px',
-
-})
+});
 
 const Image = styled('img')({
     width: '100%',
@@ -27,11 +24,10 @@ const StyledFormControl = styled(FormControl)({
 const InputTextField = styled(InputBase)({
     flex: 1,
     margin: '0 30px',
-    objectfit: 'cover',
-
+    objectFit: 'cover',
 });
 
-const Textarea= styled(TextareaAutosize)({
+const Textarea = styled(TextareaAutosize)({
     width: '100%',
     marginTop: 50,
     fontSize: 18,
@@ -39,29 +35,27 @@ const Textarea= styled(TextareaAutosize)({
     '&:focus-visible': {
         outline: 'none',
     }
-    
-
 });
 
 const InitialPost = {
     title: '',
     description: '',
     picture: '',
-    username:'',
+    username: '',
     categories: '',
     createddate: new Date()
-}
+};
 
 const CreatePost = () => {
-
     const [post, setPost] = useState(InitialPost);
     const [file, setFile] = useState(null);
 
     const { account } = useContext(DataContext);
     const location = useLocation();
+    const navigate = useNavigate();
 
-    const url = post.picture || "https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b";
-
+    // ✅ show uploaded image or fallback to default
+    const url =  post.picture || "https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b";
     useEffect(() => {
         const getImage = async () => {
             if (file) {
@@ -70,11 +64,17 @@ const CreatePost = () => {
                 data.append("file", file);
 
                 const response = await API.uploadFile(data);
+                console.log('Upload response:', response); // ✅ for debugging
 
-                setPost(prev => ({
-                    ...prev,
-                    picture: response.data
-                }));
+                if (response.issuccess) {
+                    // ✅ response.data is the full URL string from backend
+                    setPost(prev => ({
+                        ...prev,
+                        picture: response.data
+                    }));
+                } else {
+                    console.error('Upload failed:', response);
+                }
             }
         };
 
@@ -96,8 +96,23 @@ const CreatePost = () => {
         }));
     };
 
+    const savePost = async () => {
+    console.log("PUBLISH CLICKED");  
+
+     let response = await API.createPost(post);
+
+      console.log("POST RESPONSE:", response);  
+
+      if(response.issuccess){
+       navigate('/home');
+      }
+     };
+
+
+
     return (
         <Container>
+            {/* ✅ shows uploaded image or default */}
             <Image src={url} alt="banner" />
 
             <StyledFormControl>
@@ -119,7 +134,9 @@ const CreatePost = () => {
                     placeholder="Title"
                 />
 
-                <Button variant="contained">Publish</Button>
+                <Button variant="contained" onClick={(e) => savePost()}>
+                    Publish
+                </Button>
             </StyledFormControl>
 
             <Textarea

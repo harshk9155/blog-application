@@ -29,27 +29,39 @@ export const signupUser = async (request, response) => {
 
 
 export const loginUser = async (request, response) => {
-  try {
-    const user = await User.findOne({ username: request.body.username });
+    try {
+        const user = await User.findOne({ username: request.body.username });
 
-    if (!user) {
-      return response.status(401).json('Invalid Username');
+        if (!user) {
+            return response.status(401).json('Invalid Username');
+        }
+
+        const match = await bcrypt.compare(request.body.password, user.password);
+
+        if (!match) {
+            return response.status(401).json('Invalid Password');
+        }
+
+        // ✅ CREATE REAL TOKENS
+        const accessToken = jwt.sign(
+            { username: user.username, id: user._id },
+            process.env.ACCESS_SECRET_KEY,
+            { expiresIn: '15m' }
+        );
+
+        const refreshToken = jwt.sign(
+            { username: user.username, id: user._id },
+            process.env.REFRESH_SECRET_KEY
+        );
+
+        return response.status(200).json({
+            accessToken,
+            refreshToken,
+            username: user.username,
+            name: user.name
+        });
+
+    } catch (error) {
+        return response.status(500).json(error.message);
     }
-
-    const match = await bcrypt.compare(request.body.password, user.password);
-
-    if (!match) {
-      return response.status(401).json('Invalid Password');
-    }
-
-    return response.status(200).json({
-      accessToken: "dummy",
-      refreshToken: "dummy",
-      username: user.username,
-      name: user.name
-    });
-
-  } catch (error) {
-    return response.status(500).json(error.message);
-  }
 };
