@@ -37,7 +37,7 @@ const About = () => {
                 <Text variant="h5">
                     Need something built or simply want to have chat? Reach out to me on
                     <Box component="span" style={{ marginLeft: 5 }}>
-                        <Link href="https://www.instagram.com/harshk9155/" color="inherit" target="_blank">
+                        <Link href="https://www.instagram.com/" color="inherit" target="_blank">
                             <Instagram />
                         </Link>
                     </Box>  
