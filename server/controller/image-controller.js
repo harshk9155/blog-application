@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { Readable } from 'stream';
 
-const url = 'http://localhost:8000/api';
+const url = process.env.SERVER_URL || 'http://localhost:8000/api';
 let gridfsBucket;
 
 mongoose.connection.once('open', () => {
