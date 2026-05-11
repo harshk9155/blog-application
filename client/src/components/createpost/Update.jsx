@@ -43,7 +43,7 @@ const InitialPost = {
     picture: '',
     username: '',
     categories: '',
-    createddate: new Date()
+    createdDate: new Date()
 };
 
 const Update = () => {
@@ -55,21 +55,18 @@ const Update = () => {
     const navigate = useNavigate();
     const { id } = useParams();
 
-    // ✅ show uploaded image or fallback to default
-    const url =  post.picture || "https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b";
+    const url = post.picture || "https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b";
 
-    useEffect(()=>{
+    useEffect(() => {
         const fetchPost = async () => {
             let response = await API.getPostById(id);
-            if(response.issuccess){
+            if (response.issuccess) {
                 setPost(response.data);
             }
-
-
         };
         fetchPost();
+    }, [id]);
 
-    },[id])
     useEffect(() => {
         const getImage = async () => {
             if (file) {
@@ -78,10 +75,9 @@ const Update = () => {
                 data.append("file", file);
 
                 const response = await API.uploadFile(data);
-                console.log('Upload response:', response); // ✅ for debugging
+                console.log('Upload response:', response);
 
                 if (response.issuccess) {
-                    // ✅ response.data is the full URL string from backend
                     setPost(prev => ({
                         ...prev,
                         picture: response.data
@@ -110,20 +106,16 @@ const Update = () => {
         }));
     };
 
-  const UpdateBlogPost = async () => {
-    // Create a clean post object that includes _id for the URL
-    const updatedPost = { ...post, _id: id };
-    let response = await API.updatePost(updatedPost);
-    console.log("POST RESPONSE:", response);
-    if (response.issuccess) {
-        navigate(`/details/${id}`);
-    }
-};
-
+    const UpdateBlogPost = async () => {
+        const updatedPost = { ...post, _id: id };
+        let response = await API.updatePost(updatedPost);
+        if (response.issuccess) {
+            navigate(`/details/${id}`);
+        }
+    };
 
     return (
         <Container>
-            {/* ✅ shows uploaded image or default */}
             <Image src={url} alt="banner" />
 
             <StyledFormControl>
@@ -145,7 +137,7 @@ const Update = () => {
                     placeholder="Title"
                 />
 
-                <Button variant="contained" onClick={(e) => UpdateBlogPost()}>
+                <Button variant="contained" onClick={UpdateBlogPost}>
                     Update
                 </Button>
             </StyledFormControl>

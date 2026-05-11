@@ -43,7 +43,7 @@ const InitialPost = {
     picture: '',
     username: '',
     categories: '',
-    createddate: new Date()
+    createdDate: new Date()
 };
 
 const CreatePost = () => {
@@ -54,8 +54,8 @@ const CreatePost = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // ✅ show uploaded image or fallback to default
-    const url =  post.picture || "https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b";
+    const url = post.picture || "https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b";
+
     useEffect(() => {
         const getImage = async () => {
             if (file) {
@@ -64,10 +64,9 @@ const CreatePost = () => {
                 data.append("file", file);
 
                 const response = await API.uploadFile(data);
-                console.log('Upload response:', response); // ✅ for debugging
+                console.log('Upload response:', response);
 
                 if (response.issuccess) {
-                    // ✅ response.data is the full URL string from backend
                     setPost(prev => ({
                         ...prev,
                         picture: response.data
@@ -97,22 +96,14 @@ const CreatePost = () => {
     };
 
     const savePost = async () => {
-    console.log("PUBLISH CLICKED");  
-
-     let response = await API.createPost(post);
-
-      console.log("POST RESPONSE:", response);  
-
-      if(response.issuccess){
-       navigate('/home');
-      }
-     };
-
-
+        let response = await API.createPost(post);
+        if (response.issuccess) {
+            navigate('/home');
+        }
+    };
 
     return (
         <Container>
-            {/* ✅ shows uploaded image or default */}
             <Image src={url} alt="banner" />
 
             <StyledFormControl>
@@ -134,7 +125,7 @@ const CreatePost = () => {
                     placeholder="Title"
                 />
 
-                <Button variant="contained" onClick={(e) => savePost()}>
+                <Button variant="contained" onClick={savePost}>
                     Publish
                 </Button>
             </StyledFormControl>

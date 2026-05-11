@@ -4,26 +4,41 @@ export const DataContext = createContext(null);
 
 const DataProvider = ({ children }) => {
 
-    // ✅ Start with null (important)
+    // ✅ Start with null — never pre-populate with another user's data
     const [account, setAccount] = useState(null);
-
-    // ✅ Add loading state
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // ✅ On app load, restore session only if a valid token exists
         const user = sessionStorage.getItem('user');
+        const accessToken = sessionStorage.getItem('accessToken');
 
-        if (user) {
-            setAccount(JSON.parse(user));
+        if (user && accessToken) {
+            try {
+                // ✅ Safe parse — if corrupted sessionStorage, just clear it
+                setAccount(JSON.parse(user));
+            } catch {
+                sessionStorage.clear();
+            }
         }
 
-        setLoading(false); // ✅ now valid
+        setLoading(false);
     }, []);
+
+    // ✅ Custom setAccount that also clears session when logging out (setAccount(null))
+    const handleSetAccount = (newAccount) => {
+        if (!newAccount) {
+            sessionStorage.removeItem('user');
+            sessionStorage.removeItem('accessToken');
+            sessionStorage.removeItem('refreshToken');
+        }
+        setAccount(newAccount);
+    };
 
     return (
         <DataContext.Provider value={{
             account,
-            setAccount,
+            setAccount: handleSetAccount,
             loading
         }}>
             {children}
