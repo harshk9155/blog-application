@@ -1,4 +1,4 @@
-import { Button, Table, TableCell, TableHead, TableRow, TableBody, styled, Typography } from '@mui/material';
+import { Button, Table, TableCell, TableHead, TableRow, TableBody, styled } from '@mui/material';
 import { categories } from '../../constants/data';
 import { Link, useSearchParams } from 'react-router-dom';
 

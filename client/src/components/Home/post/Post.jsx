@@ -1,4 +1,4 @@
-import { Box, Typography, styled, Chip } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 import { addElipse } from '../../../utils/common-util';
 
 // ✅ FIX 1: Card has consistent height so all cards in a row align properly
