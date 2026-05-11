@@ -1,8 +1,13 @@
 {
-  "dependencies": {
-    "bcrypt": "^6.0.0",
-    "bcryptjs": "^3.0.3",
-    "gridfs-stream": "^1.1.1",
-    "react-router-dom": "^7.13.1"
+  "name": "blog-application",
+  "version": "1.0.0",
+  "description": "Full stack blog application",
+  "scripts": {
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.0"
   }
 }

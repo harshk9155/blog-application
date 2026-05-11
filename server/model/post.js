@@ -6,7 +6,7 @@ const postSchema = new mongoose.Schema({
     picture: { type: String, required: false },
     username: { type: String, required: true },
     categories: { type: String, required: false },
-    createdDate: { type: Date, default: new Date() }
+    createdDate: { type: Date, default: Date.now }
 });
 
 const postModel = mongoose.model('post', postSchema);
