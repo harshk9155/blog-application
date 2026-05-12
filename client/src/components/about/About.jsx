@@ -26,7 +26,7 @@ const About = () => {
         <Box>
             <Banner/>
             <Wrapper>
-                <Typography variant="h3">Code for Interview</Typography>
+                <Typography variant="h3">BLOG</Typography>
                 <Text variant="h5">I'm a Software Engineer based in India. 
                     I've built websites, desktop applications and corporate software.<br />
                     If you are interested, you can view some of my favorite projects here
